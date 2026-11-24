@@ -1,9 +1,5 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-part 'product.g.dart';
-
-@JsonSerializable()
 class Product {
   final String id;
   final String userId;
@@ -31,13 +27,47 @@ class Product {
     this.barcode,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) : id = id ?? const Uuid().v4(),
-       createdAt = createdAt ?? DateTime.now(),
-       updatedAt = updatedAt ?? DateTime.now();
+  })  : id = id ?? const Uuid().v4(),
+        createdAt = createdAt ?? DateTime.now(),
+        updatedAt = updatedAt ?? DateTime.now();
 
-  factory Product.fromJson(Map<String, dynamic> json) =>
-      _$ProductFromJson(json);
-  Map<String, dynamic> toJson() => _$ProductToJson(this);
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'] as String?,
+      userId: json['user_id'] as String,
+      workspaceId: json['workspace_id'] as String?,
+      name: json['name'] as String,
+      category: json['category'] as String?,
+      buyPrice: (json['buy_price'] as num).toDouble(),
+      sellPrice: (json['sell_price'] as num).toDouble(),
+      stock: json['stock'] as int? ?? 0,
+      lowStockLimit: json['low_stock_limit'] as int? ?? 5,
+      barcode: json['barcode'] as String?,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : null,
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'] as String)
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user_id': userId,
+      'workspace_id': workspaceId,
+      'name': name,
+      'category': category,
+      'buy_price': buyPrice,
+      'sell_price': sellPrice,
+      'stock': stock,
+      'low_stock_limit': lowStockLimit,
+      'barcode': barcode,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
+    };
+  }
 
   Product copyWith({
     String? id,
