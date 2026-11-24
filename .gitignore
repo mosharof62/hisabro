@@ -107,7 +107,6 @@ local.properties
 
 # Firebase
 google-services.json
-firebase_options.dart
 
 # Environment
 .env
