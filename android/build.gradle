@@ -21,6 +21,18 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            android {
+                if (namespace == null) {
+                    namespace = "com.hisabro.hisabx_app"
+                }
+                if (compileSdkVersion == null) {
+                    compileSdkVersion 34
+                }
+            }
+        }
+    }
 }
 subprojects {
     project.evaluationDependsOn(':app')
