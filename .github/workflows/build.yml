@@ -34,6 +34,37 @@ jobs:
     - name: Run analyzer
       run: flutter analyze --no-fatal-warnings --no-fatal-infos
       
+    - name: Create placeholder google-services.json
+      run: |
+        if [ ! -f "android/app/google-services.json" ]; then
+          cat > android/app/google-services.json << 'EOF'
+          {
+            "project_info": {
+              "project_number": "123456789",
+              "project_id": "hisabro-placeholder"
+            },
+            "client": [{
+              "client_info": {
+                "mobilesdk_app_id": "1:123456789:android:abc",
+                "android_client_info": {
+                  "package_name": "com.hisabro.hisabx_app"
+                }
+              },
+              "oauth_client": [],
+              "services": {
+                "analytics_service": {
+                  "analytics_property": [{
+                    "tracking_id": "UA-000000-1",
+                    "certificates": []
+                  }]
+                }
+              }
+            }],
+            "configuration_version": "3"
+          }
+          EOF
+        fi
+
     - name: Build APK (Debug)
       run: flutter build apk --debug
       
